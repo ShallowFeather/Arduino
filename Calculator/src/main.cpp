@@ -39,6 +39,7 @@ int screenTimout = 15;*/
 bool beentouched = false;
 bool toLong = false;
 bool equal = false;
+bool beep = false;
 
 #define row1x 0
 #define boxsize 48
@@ -48,7 +49,7 @@ bool equal = false;
 
 int x, y = 0;
 
-long int calc(long int num1, long int num2, char op);
+double calc(double num1, double num2, char op);
 char idbutton();
 bool Tf_check = false;
 char pastOp = ' ';
@@ -125,6 +126,7 @@ void loop()
             toLong = true;
         }
 
+        tone(D1, 392);
         TS_Point p = ts.getPoint();     // Read touchscreen
         beentouched = true;
 
@@ -539,40 +541,40 @@ char idbutton()
         //+
         if (((extray + boxsize) >= y) && (y >= extray))
         {
-            tft.drawRoundRect(row1x + boxsize * 4, extray, boxsize, boxsize, 8, ILI9341_GREEN);
+            tft.drawRoundRect(row1x + boxsize * 5, extray, boxsize, boxsize, 8, ILI9341_GREEN);
             delay(100);
-            tft.drawRoundRect(row1x + boxsize * 4, extray, boxsize, boxsize, 8, ILI9341_BLUE);
+            tft.drawRoundRect(row1x + boxsize * 5, extray, boxsize, boxsize, 8, ILI9341_BLUE);
             return 'S';
         }
         //-
         if (((extray + (boxsize * 2)) >= y) && (y >= (extray + boxsize)))
         {
-            tft.drawRoundRect(row1x + boxsize * 4, extray + boxsize, boxsize, boxsize, 8, ILI9341_GREEN);
+            tft.drawRoundRect(row1x + boxsize * 5, extray + boxsize, boxsize, boxsize, 8, ILI9341_GREEN);
             delay(100);
-            tft.drawRoundRect(row1x + boxsize * 4, extray + boxsize, boxsize, boxsize, 8, ILI9341_BLUE);
+            tft.drawRoundRect(row1x + boxsize * 5, extray + boxsize, boxsize, boxsize, 8, ILI9341_BLUE);
             return 'L';
         }
         //*
         if (((extray + (boxsize * 3)) >= y) && (y >= (extray + (boxsize * 2))))
         {
-            tft.drawRoundRect(row1x + boxsize * 4, extray + boxsize * 2, boxsize, boxsize, 8, ILI9341_GREEN);
+            tft.drawRoundRect(row1x + boxsize * 5, extray + boxsize * 2, boxsize, boxsize, 8, ILI9341_GREEN);
             delay(100);
-            tft.drawRoundRect(row1x + boxsize * 4, extray + boxsize * 2, boxsize, boxsize, 8, ILI9341_BLUE);
+            tft.drawRoundRect(row1x + boxsize * 5, extray + boxsize * 2, boxsize, boxsize, 8, ILI9341_BLUE);
             return '.';
         }
         // /
         if (((extray + (boxsize * 4)) >= y) && (y >= (extray + (boxsize * 3))))
         {
-            tft.drawRoundRect(row1x + boxsize * 4, extray + boxsize * 3, boxsize, boxsize, 8, ILI9341_GREEN);
+            tft.drawRoundRect(row1x + boxsize * 5, extray + boxsize * 3, boxsize, boxsize, 8, ILI9341_GREEN);
             delay(100);
-            tft.drawRoundRect(row1x + boxsize * 4, extray + boxsize * 3, boxsize, boxsize, 8, ILI9341_BLUE);
+            tft.drawRoundRect(row1x + boxsize * 5, extray + boxsize * 3, boxsize, boxsize, 8, ILI9341_BLUE);
             return '<';
         }
     }
     return 'a';
 }
 
-long int calc(long int num1, long int num2, char op)
+double calc(double num1, double num2, char op)
 {
     switch (op) {
         case '+':
@@ -586,7 +588,7 @@ long int calc(long int num1, long int num2, char op)
         case '^':
             return std::pow(num1, num2);
         case '%':
-            return num1 % num2;
+            return int(num1) % int(num2);
     }
     return 1;
 }
