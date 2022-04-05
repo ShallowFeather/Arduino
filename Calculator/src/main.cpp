@@ -39,7 +39,7 @@ int screenTimout = 15;*/
 bool beentouched = false;
 bool toLong = false;
 bool equal = false;
-bool beep = false;
+bool beep = true;
 
 #define row1x 0
 #define boxsize 48
@@ -59,7 +59,7 @@ char button[6][6] = {
         { '7', '8', '9', '/', '^', 'S' },
         { '4', '5', '6', 'X', 'T', 'L'},
         { '1', '2', '3', '-', '%', '.' },
-        { 'C', '0', '=', '+', '<'}
+        { 'C', '0', '=', '+', '<', 'V'}
 };
 
 void draw()
@@ -126,7 +126,9 @@ void loop()
             toLong = true;
         }
 
-        tone(D1, 392);
+        if(beep) {
+            tone(D1, 3520);
+        }
         TS_Point p = ts.getPoint();     // Read touchscreen
         beentouched = true;
 
@@ -337,8 +339,13 @@ void loop()
             key2 = "";
             equal = true;
         }
+        if(lastchar == 'V') {
+            beep ^= beep;
+        }
         //wait for release
-        while (ts.touched()) {delay(10);};
+        while (ts.touched()) {delay(10);}
+        noTone(D1);
+
         beentouched = false;
     }
 }
@@ -568,7 +575,7 @@ char idbutton()
             tft.drawRoundRect(row1x + boxsize * 5, extray + boxsize * 3, boxsize, boxsize, 8, ILI9341_GREEN);
             delay(100);
             tft.drawRoundRect(row1x + boxsize * 5, extray + boxsize * 3, boxsize, boxsize, 8, ILI9341_BLUE);
-            return '<';
+            return 'V';
         }
     }
     return 'a';
